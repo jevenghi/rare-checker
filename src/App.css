@@ -1,0 +1,210 @@
+/* App.css */
+body,
+html {
+  margin: 0;
+  padding: 0;
+  background-color: #a3d1c6;
+  font-family: Arial, sans-serif;
+  /* overflow-y: auto; */
+  justify-content: center;
+}
+
+/* Container styles */
+.app-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0.5rem;
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+  justify-content: flex-start;
+  box-sizing: border-box; /* Make sure padding is included in width */
+}
+
+/* Search input and button */
+.search-container {
+  width: 100%; /* Full width to match container */
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+}
+
+.search-wrapper {
+  position: relative;
+  width: 100%; /* Full width */
+}
+
+.search-input {
+  width: 100%;
+  box-sizing: border-box; /* Include padding in width calculation */
+  padding: 0.75rem;
+  padding-right: 2.5rem;
+  border: 2px solid #fbffe4;
+  font-size: 1rem;
+  outline: none;
+  transition: border-color 0.2s;
+  background-color: #fbffe4;
+  color: #000000;
+}
+
+.search-input:focus {
+  border-color: #3d8d7a;
+}
+
+.search-icon {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: #3d8d7a;
+  cursor: pointer;
+  padding: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.2s;
+}
+
+.search-icon:hover {
+  color: #3d8d7a;
+}
+
+.search-icon:disabled {
+  color: #fbffe4;
+  cursor: not-allowed;
+}
+
+.loading-text {
+  text-align: center;
+  margin: 1rem 0;
+  font-weight: bold;
+}
+
+/* Releases list */
+.releases-list {
+  width: 100%;
+  padding: 0;
+  margin: 0;
+  list-style-type: none;
+}
+
+/* Individual release item */
+
+.release-item:hover {
+  border-color: #a3d1c6;
+}
+
+/* Thumbnail section */
+.thumb-container {
+  width: 5rem;
+  height: 5rem;
+  flex-shrink: 0;
+}
+
+.thumb-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.no-thumb {
+  width: 100%;
+  height: 100%;
+  background-color: #e5e7eb;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #6b7280;
+}
+
+/* Information section */
+/* .release-info {
+  flex: 1;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.release-item {
+  display: flex;
+  color: #000000;
+  height: 5rem;
+
+  border: 1px solid #fbffe4;
+  margin-bottom: 0.5rem;
+  cursor: pointer;
+  transition: border-color 0.2s;
+  background-color: #fbffe4;
+} */
+
+.release-item {
+  display: flex;
+  flex-direction: row;
+
+  color: #000;
+  min-height: 5rem;
+  border: 1px solid #fbffe4;
+  margin-bottom: 0.5rem;
+  cursor: pointer;
+  transition: border-color 0.2s;
+  background-color: #fbffe4;
+  padding: 0.5rem;
+  align-items: center;
+  overflow: hidden;
+}
+
+.release-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  /* gap: 0.3rem; */
+  margin-left: 1rem;
+  overflow: hidden;
+}
+
+.release-title {
+  font-weight: bold;
+  font-size: 0.8rem;
+  color: #333;
+}
+
+.release-sale {
+  font-size: 0.9rem;
+  color: #555;
+}
+
+.release-wants {
+  font-size: 0.9rem;
+  color: #888;
+}
+
+.blocked-text {
+  color: red;
+}
+
+.high-price {
+  background-color: #b3d8a8;
+}
+.not-for-sale {
+  background-color: #3d8d7a;
+}
+
+.release-info > div {
+  margin-bottom: 0.25rem; /* Adjust this value to control spacing */
+}
+
+/* Remove bottom margin from the last child to avoid extra space at bottom */
+.release-info > div:last-child {
+  margin-bottom: 0;
+}
+
+/* Adjust line height to make text more compact if needed */
+.release-info p {
+  margin: 0;
+  line-height: 1.2; /* Tighter line height for more compact text */
+}
