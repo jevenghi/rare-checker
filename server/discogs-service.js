@@ -1,18 +1,22 @@
 import { Router } from "express";
 const router = Router();
 import fetch from "node-fetch";
+import dotenv from "dotenv";
+import path from "path";
+import { fileURLToPath } from "url";
 
-// Environment variables for API credentials - store these in .env file
-// Access them with process.env.DISCOGS_TOKEN
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+dotenv.config({ path: path.resolve(__dirname, "./config.env") });
+
 const discogsApiHeader = {
-  Authorization: `Discogs token=${process.env.DISCOGS_TOKEN}`,
-  "User-Agent": "YourAppName/1.0",
+  Authorization: `${process.env.DISCOGS_AUTH}`,
+  "User-Agent": "lp search",
 };
 
-// Get releases by title
-router.get("/releases", async (req, res) => {
+router.get("/search", async (req, res) => {
   const { query } = req.query;
-
   if (!query || !query.trim()) {
     return res.status(400).json({ error: "Query parameter is required" });
   }
@@ -30,12 +34,14 @@ router.get("/releases", async (req, res) => {
     }
 
     const data = await response.json();
+    console.log(data);
     const releases = data.results.slice(0, 5).map((release) => ({
       id: release.id,
       thumb: release.thumb,
       title: release.title,
       year: release.year,
       demand: release.community,
+      format: release.formats,
     }));
 
     res.json({ releases });
@@ -50,26 +56,16 @@ router.get("/stats/:id", async (req, res) => {
   const { id } = req.params;
 
   try {
-    const response = await fetch(`https://api.discogs.com/releases/${id}`, {
-      headers: discogsApiHeader,
-    });
+    const response = await fetch(
+      `https://api.discogs.com/marketplace/stats/${id}?curr_abbr=EUR`
+    );
 
     if (!response.ok) {
       throw new Error(`HTTP error! Status: ${response.status}`);
     }
 
     const data = await response.json();
-    const statsData = {
-      // Extract the relevant stats from the release data
-      // Adjust this based on what data you actually need
-      formats: data.formats,
-      genres: data.genres,
-      styles: data.styles,
-      tracklist: data.tracklist,
-      // Add any other relevant stats
-    };
-
-    res.json(statsData);
+    res.json(data);
   } catch (error) {
     console.error("Error fetching stats by ID:", error);
     res.status(500).json({ error: "Failed to fetch release stats" });
