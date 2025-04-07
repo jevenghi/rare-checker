@@ -1,5 +1,4 @@
-import express, { json } from "express";
-import cors from "cors";
+import express, { json } from "express";import cors from "cors";
 import { config } from "dotenv";
 import discogsRoutes from "./discogs-service";
 
