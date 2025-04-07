@@ -1,6 +1,8 @@
 import { useState } from "react";
 import "./App.css";
 
+const baseDiscogsURL = "https://www.discogs.com/release/";
+
 function App() {
   const [query, setQuery] = useState("");
   const [stats, setStats] = useState([]);
@@ -16,6 +18,7 @@ function App() {
       setStats([]);
       setNoResults(false);
       const releases = await getReleasesByTitle();
+      console.log(releases);
       if (releases && releases.length > 0) {
         const newStats = await Promise.all(
           releases.map(async (release) => {
@@ -28,11 +31,13 @@ function App() {
                   title: release.title,
                   year: release.year,
                   demand: release.demand.want,
+                  desc: release.format.text ? release.format.text : "",
                 }
               : null;
           })
         );
         const filteredStats = newStats.filter(Boolean);
+        console.log(filteredStats);
         setStats(filteredStats);
         setNoResults(filteredStats.length === 0);
       } else {
@@ -50,15 +55,7 @@ function App() {
     try {
       const res = await fetch(`/api/discogs/search?query=${query}`);
       const data = await res.json();
-      console.log(data);
-      const releases = data.results.slice(0, 5).map((release) => ({
-        id: release.id,
-        thumb: release.thumb,
-        title: release.title,
-        year: release.year,
-        demand: release.community,
-      }));
-      return releases;
+      return data;
     } catch (err) {
       console.error("Error fetching releases by title:", err);
       return [];
@@ -69,10 +66,7 @@ function App() {
 
   async function getStatsById(releaseId) {
     try {
-      const res = await fetch(
-        `https://api.discogs.com/marketplace/stats/${releaseId}?curr_abbr=EUR`,
-        { headers: discogsApiHeader }
-      );
+      const res = await fetch(`/api/discogs/stats/${releaseId}`);
       if (!res.ok) {
         throw new Error(`HTTP error! Status: ${res.status}`);
       }
@@ -157,7 +151,7 @@ function Release({ release }) {
           <>
             <div className="release-title">
               <p>
-                {release.title} ({release.year})
+                {release.title} ({release.year} {release.desc})
               </p>
             </div>
             <div className="release-sale">

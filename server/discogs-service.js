@@ -34,17 +34,16 @@ router.get("/search", async (req, res) => {
     }
 
     const data = await response.json();
-    console.log(data);
     const releases = data.results.slice(0, 5).map((release) => ({
       id: release.id,
       thumb: release.thumb,
       title: release.title,
       year: release.year,
       demand: release.community,
-      format: release.formats,
+      format: release.formats[0],
     }));
 
-    res.json({ releases });
+    res.json(releases);
   } catch (error) {
     console.error("Error fetching releases by title:", error);
     res.status(500).json({ error: "Failed to fetch releases" });
