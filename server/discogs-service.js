@@ -8,7 +8,7 @@ import { fileURLToPath } from "url";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-dotenv.config({ path: path.resolve(__dirname, "./config.env") });
+dotenv.config({ path: path.resolve(__dirname, "../.env") });
 
 const discogsApiHeader = {
   Authorization: `${process.env.DISCOGS_AUTH}`,
