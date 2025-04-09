@@ -1,9 +1,22 @@
-/* App.css */
+:root {
+  --color-bg: #31363f;
+  --color-input-bg-rel-border-dis: #eeeeee;
+  --color-focus-nfs: #76abae;
+  --color-no-thumb-bg: #e5e7eb;
+  --color-no-thumb-text: #6b7280;
+  --color-high-price: #76abae;
+  --color-title: #333;
+  --color-sale: #555;
+  --color-wants: #31363f;
+  --color-text: #000;
+  --color-error: red;
+}
+
 body,
 html {
   margin: 0;
   padding: 0;
-  background-color: #a3d1c6;
+  background-color: var(--color-bg);
   font-family: Arial, sans-serif;
   /* overflow-y: auto; */
   justify-content: center;
@@ -40,16 +53,16 @@ html {
   box-sizing: border-box; /* Include padding in width calculation */
   padding: 0.75rem;
   padding-right: 2.5rem;
-  border: 2px solid #fbffe4;
+  border: 2px solid var(--color-input-bg-rel-border-dis);
   font-size: 1rem;
   outline: none;
   transition: border-color 0.2s;
-  background-color: #fbffe4;
+  background-color: var(--color-input-bg-rel-border-dis);
   color: #000000;
 }
 
 .search-input:focus {
-  border-color: #3d8d7a;
+  border-color: var(--color-focus-nfs);
 }
 
 .search-icon {
@@ -59,7 +72,7 @@ html {
   transform: translateY(-50%);
   background: none;
   border: none;
-  color: #3d8d7a;
+  color: var(--color-focus-nfs);
   cursor: pointer;
   padding: 5px;
   display: flex;
@@ -69,11 +82,11 @@ html {
 }
 
 .search-icon:hover {
-  color: #3d8d7a;
+  color: var(--color-focus-nfs);
 }
 
 .search-icon:disabled {
-  color: #fbffe4;
+  color: var(--color-input-bg-rel-border-dis);
   cursor: not-allowed;
 }
 
@@ -94,7 +107,7 @@ html {
 /* Individual release item */
 
 .release-item:hover {
-  border-color: #a3d1c6;
+  border-color: var(--color-bg);
 }
 
 /* Thumbnail section */
@@ -114,11 +127,11 @@ html {
 .no-thumb {
   width: 100%;
   height: 100%;
-  background-color: #e5e7eb;
+  background-color: var(--color-no-thumb-bg);
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #6b7280;
+  color: var(--color-no-thumb-text);
 }
 
 /* Information section */
@@ -146,13 +159,13 @@ html {
   display: flex;
   flex-direction: row;
 
-  color: #000;
+  color: var(--color-text);
   min-height: 5rem;
-  border: 1px solid #fbffe4;
+  /* border: 1px solid var(--color-input-bg-rel-border-dis); */
   margin-bottom: 0.5rem;
   cursor: pointer;
   transition: border-color 0.2s;
-  background-color: #fbffe4;
+  background-color: var(--color-input-bg-rel-border-dis);
   padding: 0.5rem;
   align-items: center;
   overflow: hidden;
@@ -170,17 +183,17 @@ html {
 .release-title {
   font-weight: bold;
   font-size: 0.8rem;
-  color: #333;
+  color: var(--color-title);
 }
 
 .release-sale {
   font-size: 0.9rem;
-  color: #555;
+  color: var(--color-sale);
 }
 
 .release-wants {
   font-size: 0.9rem;
-  color: #888;
+  color: var(--color-wants);
 }
 
 .blocked-text {
@@ -188,10 +201,10 @@ html {
 }
 
 .high-price {
-  background-color: #b3d8a8;
+  background-color: var(--color-high-price);
 }
 .not-for-sale {
-  background-color: #3d8d7a;
+  background-color: var(--color-focus-nfs);
 }
 
 .release-info > div {
@@ -207,4 +220,20 @@ html {
 .release-info p {
   margin: 0;
   line-height: 1.2; /* Tighter line height for more compact text */
+}
+
+.spinner {
+  border: 4px solid rgb(255, 253, 253);
+  border-left-color: var(--color-focus-nfs);
+  border-radius: 50%;
+  width: 2rem;
+  height: 2rem;
+  animation: spin 1s linear infinite;
+  margin: 1rem auto;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
 }

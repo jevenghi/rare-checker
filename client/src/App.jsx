@@ -111,7 +111,7 @@ function App() {
         </div>
       </form>
 
-      {loading && <p className="loading-text">Loading...</p>}
+      {loading && <div className="spinner" />}
 
       {noResults && <p>No items found</p>}
 
@@ -149,7 +149,8 @@ function Release({ release }) {
           <>
             <div className="release-title">
               <p>
-                {release.title} ({release.year}, {release.desc})
+                {release.title} ({release.year},{" "}
+                <i style={{ fontWeight: 300 }}>{release.desc}</i>)
               </p>
             </div>
             <div className="release-sale">
