@@ -1,0 +1,89 @@
+.releaseItem:hover {  border-color: var(--color-bg);
+}
+
+.thumbContainer {
+  width: 5rem;
+  height: 5rem;
+  flex-shrink: 0;
+}
+
+.thumbImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.noThumb {
+  width: 100%;
+  height: 100%;
+  background-color: var(--color-no-thumb-bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-no-thumb-text);
+}
+
+.releaseItem {
+  display: flex;
+  flex-direction: row;
+  color: var(--color-text);
+  min-height: 5rem;
+  margin-bottom: 0.5rem;
+  cursor: pointer;
+  transition: border-color 0.2s;
+  background-color: var(--color-input-bg-rel-border-dis);
+  padding: 0.5rem;
+  align-items: center;
+  overflow: hidden;
+}
+
+.releaseInfo {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  /* gap: 0.3rem; */
+  margin-left: 1rem;
+  overflow: hidden;
+}
+
+.releaseTitle {
+  font-weight: bold;
+  font-size: 0.8rem;
+  color: var(--color-title);
+}
+
+.releaseSale {
+  font-size: 0.9rem;
+  color: var(--color-sale);
+}
+
+.releaseWants {
+  font-size: 0.9rem;
+  color: var(--color-wants);
+}
+
+.blockedText {
+  color: red;
+}
+
+.highPrice {
+  background-color: var(--color-high-price);
+}
+
+.notForSale {
+  background-color: var(--color-focus-nfs);
+}
+
+.releaseInfo > div {
+  margin-bottom: 0.25rem;
+}
+
+.releaseInfo > div:last-child {
+  margin-bottom: 0;
+}
+
+.releaseInfo p {
+  margin: 0;
+  line-height: 1.2;
+}

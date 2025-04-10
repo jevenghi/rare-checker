@@ -1,29 +1,15 @@
 import puppeteer from "puppeteer";
-const baseSalesURL = "https://www.discogs.com/release/";
+
+import dotenv from "dotenv";
+import path from "path";
+import { fileURLToPath } from "url";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+dotenv.config({ path: path.resolve(__dirname, "../.env") });
+
 const popsikeURL = "https://www.popsike.com/index.php";
-
-async function getReleaseSaleStats(releaseId) {
-  const browser = await puppeteer.launch({ headless: false });
-  const page = await browser.newPage();
-  const url = `${baseSalesURL}${releaseId}`;
-
-  await page.goto(url, {
-    waitUntil: "domcontentloaded",
-  });
-
-  const data = await page.evaluate(() => {
-    const container = document.querySelector(".items_PQSxS ul");
-    if (!container) return null;
-
-    return Array.from(container.querySelectorAll("li")).map((li) =>
-      li.innerText.trim()
-    );
-  });
-
-  console.log(data);
-
-  await browser.close();
-}
 
 async function autoScroll(page) {
   await page.evaluate(async () => {
@@ -65,8 +51,8 @@ async function getPopsikeStats(title) {
 
   const inputExists = await page.$(loginSelector);
   if (inputExists) {
-    await page.type(loginSelector, "");
-    await page.type(passwordSelector, "");
+    await page.type(loginSelector, process.env.POPSIKE_LOGIN);
+    await page.type(passwordSelector, process.env.POPSIKE_PASS);
     await page.keyboard.press("Enter");
   }
 
@@ -89,10 +75,10 @@ async function getPopsikeStats(title) {
           .split("€")[1]
           .trim() || "";
 
-      const imageSrc =
-        item.querySelector("img.thumbnail")?.getAttribute("src") || "no thumb";
-      const fullThumbSrc = `https://www.popsike.com${imageSrc}`;
-      results.push({ title, date, price, fullThumbSrc });
+      // const imageSrc =
+      //   item.querySelector("img.thumbnail")?.getAttribute("src") || "no thumb";
+      // const fullThumbSrc = `https://www.popsike.com${imageSrc}`;
+      results.push({ title, date, price });
     });
 
     return results;
@@ -109,3 +95,4 @@ getPopsikeStats("Isd es ist beit");
 // } catch (err) {
 //   console.log(err);
 // }
+export default getPopsikeStats;

@@ -1,6 +1,8 @@
 import { useState } from "react";
 import "./App.css";
 import SearchBar from "./components/SearchBar";
+import DiscogsRelease from "./components/DiscogsRelease";
+// import getPopsikeStats from "../../server/popsike-service";
 
 const baseDiscogsURL = "https://www.discogs.com/release/";
 
@@ -148,7 +150,7 @@ function List({ stats }) {
   return (
     <ul className="releases-list">
       {stats.map((release) => (
-        <Release key={release.id} release={release} />
+        <DiscogsRelease key={release.id} release={release} />
       ))}
     </ul>
   );
