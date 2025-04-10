@@ -1,5 +1,6 @@
 import { useState } from "react";
 import "./App.css";
+import SearchBar from "./components/SearchBar";
 
 const baseDiscogsURL = "https://www.discogs.com/release/";
 
@@ -44,8 +45,6 @@ function App() {
       }
     } catch (err) {
       alert("Error fetching release stats:", err);
-    } finally {
-      setQuery("");
     }
   }
   async function getReleasesByTitle() {
@@ -78,38 +77,12 @@ function App() {
 
   return (
     <div className="app-container">
-      <form onSubmit={getReleaseStats} className="search-container">
-        <div className="search-wrapper">
-          <input
-            type="text"
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            className="search-input"
-            placeholder="Enter release title"
-            disabled={loading}
-          />
-          <button
-            type="submit"
-            className="search-icon"
-            disabled={loading || !query.trim()}
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="16"
-              height="16"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <circle cx="11" cy="11" r="8"></circle>
-              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-            </svg>
-          </button>
-        </div>
-      </form>
+      <SearchBar
+        getReleaseStats={getReleaseStats}
+        query={query}
+        setQuery={setQuery}
+        loading={loading}
+      />
 
       {loading && <div className="spinner" />}
 

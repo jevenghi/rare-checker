@@ -1,0 +1,70 @@
+.searchContainer {  width: 100%; /* Full width to match container */
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+}
+
+.searchWrapper {
+  position: relative;
+  width: 100%; /* Full width */
+}
+
+.searchInput {
+  width: 100%;
+  box-sizing: border-box; /* Include padding in width calculation */
+  padding: 0.75rem;
+  padding-right: 2.5rem;
+  border: 2px solid var(--color-input-bg-rel-border-dis);
+  font-size: 1rem;
+  outline: none;
+  transition: border-color 0.2s;
+  background-color: var(--color-input-bg-rel-border-dis);
+  color: #000000;
+}
+
+.searchInput:focus {
+  border-color: var(--color-focus-nfs);
+}
+
+.searchIcon {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: var(--color-focus-nfs);
+  cursor: pointer;
+  padding: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.2s;
+}
+
+.searchIcon:hover {
+  color: var(--color-focus-nfs);
+}
+
+.searchIcon:disabled {
+  color: var(--color-input-bg-rel-border-dis);
+  cursor: not-allowed;
+}
+.clearButton {
+  position: absolute;
+  left: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  z-index: 2;
+}
+
+/* Adjust input padding to accommodate the X button */
+.searchInput {
+  padding-left: 32px;
+}
