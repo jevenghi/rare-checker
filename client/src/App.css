@@ -33,7 +33,11 @@ html {
   max-width: 800px;
   margin: 0 auto;
   justify-content: flex-start;
-  box-sizing: border-box; /* Make sure padding is included in width */
+  box-sizing: border-box;
+}
+
+.app-container > form {
+  margin-top: auto;
 }
 
 /* Search input and button */

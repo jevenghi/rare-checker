@@ -79,18 +79,25 @@ function App() {
 
   return (
     <div className="app-container">
-      <SearchBar
+      {/* <SearchBar
         getReleaseStats={getReleaseStats}
         query={query}
         setQuery={setQuery}
         loading={loading}
-      />
+      /> */}
 
       {loading && <div className="spinner" />}
 
       {noResults && <p>No items found</p>}
 
       {stats.length > 0 && <List stats={stats} />}
+
+      <SearchBar
+        getReleaseStats={getReleaseStats}
+        query={query}
+        setQuery={setQuery}
+        loading={loading}
+      />
     </div>
   );
 }
