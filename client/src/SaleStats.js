@@ -1,5 +1,4 @@
-import puppeteer from "puppeteer";
-const baseSalesURL = "https://www.discogs.com/release/";
+import puppeteer from "puppeteer";const baseSalesURL = "https://www.discogs.com/release/";
 const popsikeURL = "https://www.popsike.com/index.php";
 
 async function getReleaseSaleStats(releaseId) {
@@ -66,8 +65,8 @@ async function getPopsikeStats(title) {
 
   const inputExists = await page.$(loginSelector);
   if (inputExists) {
-    await page.type(loginSelector, "jevenghi");
-    await page.type(passwordSelector, "skatabaza");
+    await page.type(loginSelector, "");
+    await page.type(passwordSelector, "");
     await page.keyboard.press("Enter");
   }
 
