@@ -1,6 +1,7 @@
-.searchContainer {  width: 100%; /* Full width to match container */
+.searchContainer {
+  width: 100%; /* Full width to match container */
   margin-top: 2rem;
-  margin-bottom: 2rem;
+  margin-bottom: 4rem;
 }
 
 .searchWrapper {
