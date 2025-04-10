@@ -1,8 +1,19 @@
 import styles from "./SearchBar.module.css";
+import { useRef, useEffect } from "react";
 
 function SearchBar({ getReleaseStats, query, setQuery, loading }) {
+  const inputRef = useRef(null);
+  useEffect(() => {
+    if (inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, []);
+
   const handleClear = () => {
     setQuery("");
+    if (inputRef.current) {
+      inputRef.current.focus();
+    }
   };
   return (
     <form onSubmit={getReleaseStats} className={styles.searchContainer}>
@@ -31,6 +42,7 @@ function SearchBar({ getReleaseStats, query, setQuery, loading }) {
           </button>
         )}
         <input
+          ref={inputRef}
           type="text"
           value={query}
           onChange={(e) => setQuery(e.target.value)}

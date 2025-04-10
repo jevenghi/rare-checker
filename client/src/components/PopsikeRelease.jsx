@@ -1,32 +1,33 @@
-function PopsikeRelease() {
+import styles from "./DiscogsRelease.module.css";
+
+function PopsikeRelease({ release }) {
   return (
     <li>
-      <div className="thumb-container">
+      <div className={styles.thumbContainer}>
         {release.thumb ? (
           <img
             src={release.thumb}
             alt="Album thumbnail"
-            className="thumb-image"
+            className={styles.thumbImage}
           />
         ) : (
-          <div className="no-thumb">
+          <div className={styles.noThumb}>
             <span>No image</span>
           </div>
         )}
       </div>
-      <div className="release-info">
+      <div className={styles.releaseInfo}>
         <>
-          <div className="release-title">
+          <div className={styles.releaseTitle}>
             <p>{release.title}</p>
           </div>
-          <div className="release-sale">
+          <div className={styles.releaseSale}>
             <p>Sold for: {release.price}</p>
           </div>
-          <div className="release-date">
+          <div className={styles.releaseWants}>
             <p>Sold on: {release.date}</p>
           </div>
         </>
-        )}
       </div>
     </li>
   );

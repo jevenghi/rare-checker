@@ -1,5 +1,7 @@
 import styles from "./DiscogsRelease.module.css";
 
+const baseDiscogsURL = "https://www.discogs.com/release/";
+
 function DiscogsRelease({ release }) {
   const isHighPrice = release.lowest_price?.value > 50;
 

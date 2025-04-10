@@ -10,6 +10,7 @@ const __dirname = path.dirname(__filename);
 dotenv.config({ path: path.resolve(__dirname, "../.env") });
 
 import router from "./discogs-service.js";
+import popsikeRouter from "./popsike-service.js";
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -17,6 +18,7 @@ const PORT = process.env.PORT || 3001;
 app.use(cors());
 app.use(express.json());
 app.use("/api/discogs", router);
+app.use("/api/popsike", popsikeRouter);
 
 app.use(express.static(path.join(__dirname, "../client/dist")));
 
