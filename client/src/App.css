@@ -227,7 +227,7 @@ html {
   line-height: 1.2; /* Tighter line height for more compact text */
 }
 
-.spinner {
+/* .spinner {
   border: 4px solid rgb(255, 253, 253);
   border-left-color: var(--color-focus-nfs);
   border-radius: 50%;
@@ -240,5 +240,30 @@ html {
 @keyframes spin {
   to {
     transform: rotate(360deg);
+  }
+} */
+
+.spinner {
+  border: 4px solid rgb(255, 253, 253);
+  border-left-color: var(--color-focus-nfs);
+  border-radius: 50%;
+  width: 2rem;
+  height: 2rem;
+  animation: spin 1s linear infinite;
+
+  /* Centering styles */
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1000;
+}
+
+@keyframes spin {
+  0% {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+  100% {
+    transform: translate(-50%, -50%) rotate(360deg);
   }
 }
