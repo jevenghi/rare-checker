@@ -1,5 +1,4 @@
-.searchContainer {
-  width: 100%; /* Full width to match container */
+.searchContainer {  width: 100%; /* Full width to match container */
   margin-top: 2rem;
   margin-bottom: 4rem;
 }
@@ -52,7 +51,7 @@
 }
 .clearButton {
   position: absolute;
-  left: 8px;
+  left: 5px;
   top: 50%;
   transform: translateY(-50%);
   background: none;
