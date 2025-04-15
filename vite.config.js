@@ -16,6 +16,7 @@ export default defineConfig({
     port: 5173,
     proxy: {
       "/api/discogs": "http://localhost:3001",
+      "/api/popsike": "http://localhost:3001",
     },
   },
 });

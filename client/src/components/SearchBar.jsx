@@ -1,7 +1,7 @@
 import styles from "./SearchBar.module.css";
 import { useRef, useEffect } from "react";
 
-function SearchBar({ getReleaseStats, query, setQuery, loading }) {
+function SearchBar({ handleSearch, query, setQuery, loading }) {
   const inputRef = useRef(null);
   useEffect(() => {
     if (inputRef.current) {
@@ -16,7 +16,7 @@ function SearchBar({ getReleaseStats, query, setQuery, loading }) {
     }
   };
   return (
-    <form onSubmit={getReleaseStats} className={styles.searchContainer}>
+    <form onSubmit={handleSearch} className={styles.searchContainer}>
       <div className={styles.searchWrapper}>
         {query && (
           <button

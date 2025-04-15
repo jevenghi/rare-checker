@@ -1,26 +1,132 @@
-import { useState } from "react";
+import { useState, useReducer } from "react";
 import "./App.css";
 import SearchBar from "./components/SearchBar";
+import SourceChips from "./components/SourceChips";
 import DiscogsRelease from "./components/DiscogsRelease";
+import PopsikeRelease from "./components/PopsikeRelease";
 // import getPopsikeStats from "../../server/popsike-service";
 
 const baseDiscogsURL = "https://www.discogs.com/release/";
 
+const ACTIONS = {
+  SEARCH_START: "search_start",
+  SEARCH_SUCCESS: "search_success",
+  SEARCH_ERROR: "search_error",
+  SEARCH_NO_RESULTS: "search_no_results",
+  SET_SOURCE: "set_source",
+};
+
+const SOURCES = {
+  DISCOGS: "discogs",
+  POPSIKE: "popsike",
+  EBAY: "ebay",
+};
+
+const initialState = {
+  results: [],
+  loading: false,
+  error: null,
+  noResults: false,
+  source: SOURCES.DISCOGS,
+};
+
+function searchReducer(state, action) {
+  switch (action.type) {
+    case ACTIONS.SEARCH_START:
+      return {
+        ...state,
+        loading: true,
+        error: null,
+        noResults: false,
+        results: [],
+      };
+    case ACTIONS.SEARCH_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        results: action.payload,
+        noResults: action.payload.length === 0,
+      };
+    case ACTIONS.SEARCH_ERROR:
+      return {
+        ...state,
+        loading: false,
+        error: action.payload,
+        noResults: false,
+      };
+    case ACTIONS.SEARCH_NO_RESULTS:
+      return {
+        ...state,
+        loading: false,
+        noResults: true,
+        results: [],
+      };
+    case ACTIONS.SET_SOURCE:
+      return {
+        ...state,
+        source: action.payload,
+        results: [],
+      };
+    default:
+      return state;
+  }
+}
+
 function App() {
   const [query, setQuery] = useState("");
-  const [stats, setStats] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [noResults, setNoResults] = useState(false);
+  const [state, dispatch] = useReducer(searchReducer, initialState);
 
-  async function getReleaseStats(e) {
+  async function handleSearch(e) {
     if (e) e.preventDefault();
+    if (!query.trim() || state.loading) return;
 
-    if (!query.trim() || loading) return;
+    dispatch({ type: ACTIONS.SEARCH_START });
 
     try {
-      setStats([]);
-      setNoResults(false);
+      switch (state.source) {
+        case SOURCES.DISCOGS:
+          await searchDiscogs();
+          break;
+        case SOURCES.POPSIKE:
+          await searchPopsike();
+          break;
+        case SOURCES.EBAY:
+          await searchEbay();
+          break;
+        default:
+          await searchDiscogs();
+      }
+    } catch (err) {
+      dispatch({
+        type: ACTIONS.SEARCH_ERROR,
+        payload: `Error searching ${state.source}: ${err.message}`,
+      });
+    }
+  }
+
+  async function searchPopsike() {
+    try {
       const releases = await getReleasesByTitle();
+
+      if (releases && releases.length > 0) {
+        const popsikeResults = releases.map((item) => ({
+          ...item,
+          source: SOURCES.POPSIKE,
+        }));
+
+        dispatch({ type: ACTIONS.SEARCH_SUCCESS, payload: popsikeResults });
+      } else {
+        dispatch({ type: ACTIONS.SEARCH_NO_RESULTS });
+      }
+    } catch (err) {
+      dispatch({ type: ACTIONS.SEARCH_ERROR, payload: err.message });
+    }
+  }
+
+  async function searchDiscogs() {
+    try {
+      const releases = await getReleasesByTitle();
+
       if (releases && releases.length > 0) {
         const newStats = await Promise.all(
           releases.map(async (release) => {
@@ -34,32 +140,36 @@ function App() {
                   year: release.year,
                   demand: release.demand.want,
                   desc: release.format.text ? release.format.text : "Black",
+                  source: SOURCES.DISCOGS,
                 }
               : null;
           })
         );
+
         const filteredStats = newStats.filter(Boolean);
-        setStats(filteredStats);
-        setNoResults(filteredStats.length === 0);
+        dispatch({ type: ACTIONS.SEARCH_SUCCESS, payload: filteredStats });
       } else {
-        setStats([]);
-        setNoResults(true);
+        dispatch({ type: ACTIONS.SEARCH_NO_RESULTS });
       }
     } catch (err) {
-      alert("Error fetching release stats:", err);
+      dispatch({
+        type: ACTIONS.SEARCH_ERROR,
+        payload: `Error searching Discogs: ${err.message}`,
+      });
     }
   }
+
   async function getReleasesByTitle() {
-    setLoading(true);
     try {
-      const res = await fetch(`/api/discogs/search?query=${query}`);
+      const res = await fetch(`/api/${state.source}/search?query=${query}`);
+      if (!res.ok) {
+        throw new Error(`HTTP error! Status: ${res.status}`);
+      }
       const data = await res.json();
       return data;
     } catch (err) {
       console.error("Error fetching releases by title:", err);
-      return [];
-    } finally {
-      setLoading(false);
+      throw err;
     }
   }
 
@@ -77,88 +187,53 @@ function App() {
     }
   }
 
+  function handleSourceChange(source) {
+    dispatch({ type: ACTIONS.SET_SOURCE, payload: source });
+  }
+
   return (
     <div className="app-container">
-      {/* <SearchBar
-        getReleaseStats={getReleaseStats}
-        query={query}
-        setQuery={setQuery}
-        loading={loading}
-      /> */}
+      <SourceChips
+        SOURCES={SOURCES}
+        state={state}
+        handleSourceChange={handleSourceChange}
+      />
 
-      {loading && <div className="spinner" />}
+      {state.loading && <div className="spinner" />}
 
-      {noResults && <p>No items found</p>}
+      {state.error && <p className="error-message">{state.error}</p>}
 
-      {stats.length > 0 && <List stats={stats} />}
+      {state.noResults && <p className="no-items">No items found</p>}
+
+      {state.results.length > 0 && (
+        <List results={state.results} source={state.source} />
+      )}
 
       <SearchBar
-        getReleaseStats={getReleaseStats}
+        handleSearch={handleSearch}
         query={query}
         setQuery={setQuery}
-        loading={loading}
+        loading={state.loading}
       />
     </div>
   );
 }
 
-function Release({ release }) {
-  const isHighPrice = release.lowest_price?.value > 50;
-  const isForSale = release.num_for_sale > 0;
-
-  return (
-    <li
-      onClick={() => window.open(`${baseDiscogsURL}${release.id}`, "_blank")}
-      className={`release-item ${isHighPrice ? "high-price" : ""}`}
-    >
-      <div className="thumb-container">
-        {release.thumb ? (
-          <img
-            src={release.thumb}
-            alt="Album thumbnail"
-            className="thumb-image"
-          />
-        ) : (
-          <div className="no-thumb">
-            <span>No image</span>
-          </div>
-        )}
-      </div>
-      <div className="release-info">
-        {release.blocked_from_sale ? (
-          <p className="blocked-text">Blocked from sale</p>
-        ) : (
-          <>
-            <div className="release-title">
-              <p>
-                {release.title} ({release.year},{" "}
-                <i style={{ fontWeight: 300 }}>{release.desc}</i>)
-              </p>
-            </div>
-            <div className="release-sale">
-              <p>
-                For sale: {release.num_for_sale} | From:{" "}
-                {release.lowest_price?.value
-                  ? `${release.lowest_price.value}`
-                  : "N/A"}
-              </p>
-            </div>
-            <div className="release-wants">
-              <p>Wants: {release.demand}</p>
-            </div>
-          </>
-        )}
-      </div>
-    </li>
-  );
-}
-
-function List({ stats }) {
+function List({ results, source }) {
   return (
     <ul className="releases-list">
-      {stats.map((release) => (
-        <DiscogsRelease key={release.id} release={release} />
-      ))}
+      {results.map((item) => {
+        switch (source) {
+          case SOURCES.DISCOGS:
+            return <DiscogsRelease key={item.id} release={item} />;
+          case SOURCES.POPSIKE:
+            return <PopsikeRelease key={item.date} release={item} />;
+          case SOURCES.EBAY:
+            return <DiscogsRelease key={item.id} release={item} />;
+          default:
+            return <DiscogsRelease key={item.id} release={item} />;
+        }
+      })}
     </ul>
   );
 }

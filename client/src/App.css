@@ -267,3 +267,8 @@ html {
     transform: translate(-50%, -50%) rotate(360deg);
   }
 }
+.no-items,
+.error-message {
+  color: rgb(255, 253, 253);
+  margin-top: 5rem;
+}

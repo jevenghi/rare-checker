@@ -31,8 +31,15 @@ async function autoScroll(page) {
   });
 }
 
-async function getPopsikeStats(title) {
-  const browser = await puppeteer.launch();
+popsikeRouter.get("/search", async (req, res) => {
+  const { query } = req.query;
+  if (!query || !query.trim()) {
+    return res.status(400).json({ error: "Query parameter is required" });
+  }
+
+  const browser = await puppeteer.launch({
+    args: ["--no-sandbox", "--disable-setuid-sandbox"],
+  });
   const page = await browser.newPage();
 
   await page.goto(popsikeURL, {
@@ -41,7 +48,7 @@ async function getPopsikeStats(title) {
 
   await page.waitForSelector("#ac_searchtext");
 
-  await page.type("#ac_searchtext", title);
+  await page.type("#ac_searchtext", query);
 
   await page.keyboard.press("Enter");
 
@@ -84,10 +91,8 @@ async function getPopsikeStats(title) {
 
     return results;
   });
-
-  console.log(items);
-
+  res.json(items);
   await browser.close();
-}
+});
 
 export default popsikeRouter;

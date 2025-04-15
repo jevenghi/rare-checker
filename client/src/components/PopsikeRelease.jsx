@@ -2,7 +2,7 @@ import styles from "./DiscogsRelease.module.css";
 
 function PopsikeRelease({ release }) {
   return (
-    <li>
+    <li className={styles.releaseItem}>
       <div className={styles.thumbContainer}>
         {release.thumb ? (
           <img
