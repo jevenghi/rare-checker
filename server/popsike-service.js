@@ -108,8 +108,6 @@ popsikeRouter.get("/search", async (req, res) => {
       return results;
     });
 
-    console.log(items);
-
     res.json(items);
   } catch (err) {
     console.error("Popsike search error:", err);
