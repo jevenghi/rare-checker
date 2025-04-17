@@ -101,12 +101,13 @@ popsikeRouter.get("/search", async (req, res) => {
           originalImagePath = decodeURIComponent(params.get("src"));
         }
 
-        const fullImagePath = `https://www.popsike.com${originalImagePath}`;
+        const fullImagePath = `${originalImagePath}`;
         results.push({ title, date, price, link, fullImagePath });
       });
 
       return results;
     });
+    console.log(items);
 
     res.json(items);
   } catch (err) {
