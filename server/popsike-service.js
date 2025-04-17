@@ -33,6 +33,7 @@ async function autoScroll(page) {
 
 popsikeRouter.get("/search", async (req, res) => {
   const { query } = req.query;
+
   if (!query || !query.trim()) {
     return res.status(400).json({ error: "Query parameter is required" });
   }
@@ -101,7 +102,16 @@ popsikeRouter.get("/search", async (req, res) => {
           originalImagePath = decodeURIComponent(params.get("src"));
         }
 
-        const fullImagePath = `${originalImagePath}`;
+        let fullImagePath;
+        if (originalImagePath) {
+          if (originalImagePath.startsWith("http")) {
+            fullImagePath = originalImagePath;
+          } else if (originalImagePath.startsWith("/pix/")) {
+            fullImagePath = `https://www.popsike.pics/${originalImagePath}`;
+          }
+        } else {
+          fullImagePath = "";
+        }
         results.push({ title, date, price, link, fullImagePath });
       });
 
