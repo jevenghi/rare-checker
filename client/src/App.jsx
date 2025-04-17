@@ -162,10 +162,11 @@ function App() {
   async function getReleasesByTitle() {
     try {
       const res = await fetch(`/api/${state.source}/search?query=${query}`);
-      if (!res.ok) {
-        throw new Error(`HTTP error! Status: ${res.status}`);
-      }
       const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data.error || `HTTP error! Status: ${res.status}`);
+      }
       return data;
     } catch (err) {
       console.error("Error fetching releases by title:", err);
@@ -227,7 +228,7 @@ function List({ results, source }) {
           case SOURCES.DISCOGS:
             return <DiscogsRelease key={item.id} release={item} />;
           case SOURCES.POPSIKE:
-            return <PopsikeRelease key={item.date} release={item} />;
+            return <PopsikeRelease key={item.link} release={item} />;
           case SOURCES.EBAY:
             return <DiscogsRelease key={item.id} release={item} />;
           default:

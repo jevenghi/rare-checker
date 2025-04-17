@@ -2,11 +2,14 @@ import styles from "./DiscogsRelease.module.css";
 
 function PopsikeRelease({ release }) {
   return (
-    <li className={styles.releaseItem}>
+    <li
+      onClick={() => window.open(`${release.link}`, "_blank")}
+      className={styles.releaseItem}
+    >
       <div className={styles.thumbContainer}>
-        {release.thumb ? (
+        {release.fullImagePath ? (
           <img
-            src={release.thumb}
+            src={release.fullImagePath}
             alt="Album thumbnail"
             className={styles.thumbImage}
           />
