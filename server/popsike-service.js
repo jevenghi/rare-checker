@@ -33,7 +33,6 @@ async function autoScroll(page) {
 
 popsikeRouter.get("/search", async (req, res) => {
   const { query } = req.query;
-  console.log(query);
   if (!query || !query.trim()) {
     return res.status(400).json({ error: "Query parameter is required" });
   }
@@ -108,7 +107,6 @@ popsikeRouter.get("/search", async (req, res) => {
 
       return results;
     });
-    console.log(items);
 
     res.json(items);
   } catch (err) {

@@ -160,6 +160,7 @@ function App() {
   }
 
   async function getReleasesByTitle() {
+    console.log(query);
     try {
       const res = await fetch(`/api/${state.source}/search?query=${query}`);
       const data = await res.json();
